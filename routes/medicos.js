@@ -18,18 +18,32 @@ const router = Router();
 router.get( '/', getMedicos);
 
 router.post( '/',
-[
-    validarJWT,
-    check('nombre', 'El nombre es requerido').not().isEmpty(),
-    check('hospital', 'El hospital id debe ser valido').isMongoId(),
-    validarCampos
+    [
+        validarJWT,
+        check('nombre', 'El nombre es requerido').not().isEmpty(),
+        check('hospital', 'El hospital id debe ser valido').isMongoId(),
+        validarCampos
 
     ]  
     ,crearMedicos);
 
-router.put( '/:id', actualizarMedicos); 
+router.put( '/:id',  
+    [
+        validarJWT,
+        check('nombre', 'El nombre es requerido').not().isEmpty(),
+        check('hospital', 'El hospital id debe ser valido').isMongoId(),
+        validarCampos
+
+    ]  
+    ,actualizarMedicos); 
     
-router.delete( '/:id', borrarMedicos)    
+router.delete( '/:id',
+    [
+    
+    validarJWT,
+
+    ],
+   borrarMedicos)    
 
 
 

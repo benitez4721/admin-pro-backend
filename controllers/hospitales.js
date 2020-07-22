@@ -21,10 +21,6 @@ const getHospitales = async (req, res) => {
             msg: "Ocurrio algo inesperado"
         })
     }
-    res.json({
-        ok: true,
-        msg: 'geHospitales'
-    })
 }
 
 const crearHospitales = async (req, res) => {
@@ -57,19 +53,75 @@ const crearHospitales = async (req, res) => {
     })
 }
 
-const actualizarHospitales = (req, res) => {
+const actualizarHospitales = async(req, res) => {
+    const uid = req.uid
+    const id = req.params.id
+    try {
+
+        const hospital = await Hospital.findById(id)
+    
+        if(!hospital){
+            res.status(500).json({
+                ok: true,
+                msg: "Error al actualizar el hospital"
+            })
+        }
+
+        const cambiosHospital = {
+            ...req.body,
+            usuario: uid
+        }
+        
+        const hospitalActualizado = await Hospital.findByIdAndUpdate(id,cambiosHospital, {new : true})
+        res.json({
+            ok: true,
+            hospitalActualizado
+        })
+        
+    } catch (error) {
+        res.status(500).json({
+            ok: true,
+            msg: "Error al actualizar el hospital"
+        })
+    }
     res.json({
         ok: true,
         msg: 'actualizarHospitales'
     })
 }
 
-const borrarHospitales = (req, res) => {
-    res.json({
-        ok: true,
-        msg: 'borrarHospitales'
-    })
+const borrarHospitales = async (req, res) => {
+
+    const id = req.params.id
+    try {
+
+        const hospital = await Hospital.findById(id)
+    
+        if(!hospital){
+            return res.status(400).json({
+                ok: false,
+                msg: "El hospital no existe"
+            })
+        }
+
+
+        const hospitalBorrado = await Hospital.findByIdAndDelete(id)
+
+        res.json({
+            ok: true,
+            msg: "Hospital borrado",
+            hospitalBorrado
+        })
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: "Error al borrar hospital"
+        })
+    }
 }
+
 
 
 module.exports = {
