@@ -11,7 +11,7 @@ const router = Router()
 
 router.get('/:busqueda', validarJWT ,getBusqueda)
 
-router.get('/coleccion/:tabla/:busqueda', validarJWT ,getDocumentosColeccion)
+router.get('/:tabla/:busqueda', validarJWT ,getDocumentosColeccion)
 
 
 

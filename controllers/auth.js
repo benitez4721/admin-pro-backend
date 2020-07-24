@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs')
 const Usuario = require('../models/usuarios')
 const { generarJWT } = require('../helpers/jwt')
 const {googleVerify } = require('../helpers/google-verify')
+const { findById } = require('../models/usuarios')
 
 
 const login = async( req, res = response) => {
@@ -12,7 +13,7 @@ const login = async( req, res = response) => {
     
     try {
         
-        // Verificar contrasena 
+        // Verificar correo
 
         const usuarioDB = await Usuario.findOne({email})
 
@@ -39,7 +40,8 @@ const login = async( req, res = response) => {
 
         res.json({
             ok: true,
-            token
+            token,
+            usuario: usuarioDB
         })
         
 
@@ -103,9 +105,12 @@ const renewToken = async (req, res = response) => {
 
     const uid = req.uid
     const token = await generarJWT( uid );
+
+    const usuarioDB = await  Usuario.findById(uid)
     res.json({
         ok: true,
-        token
+        token,
+        usuario: usuarioDB
     })
 }
 

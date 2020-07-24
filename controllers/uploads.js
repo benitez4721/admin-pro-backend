@@ -79,14 +79,17 @@ const fileDownload = ( req, res) => {
     const foto = req.params.foto;
 
     const pathImg = path.join( __dirname, `../uploads/${tipo}/${foto}`);
-    
+    console.log("aqui toy");
     // imagen por defecto
     if ( fs.existsSync(pathImg)){
 
+
         res.sendFile( pathImg );
+        
     }else{
         const pathImg =  path.join( __dirname, `../uploads/no-img.jpg`);
         res.sendFile( pathImg );
+      
     }
 
 

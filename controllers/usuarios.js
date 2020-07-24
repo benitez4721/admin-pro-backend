@@ -10,7 +10,6 @@ const Usuario = require('../models/usuarios')
 const getUsuarios = async (req,res = response) => {
     
     const desde = Number(req.query.desde) || 0;
-    console.log(desde);
 
     // const usuarios = await Usuario
     //                         .find({}, 'nombre role email google')
@@ -24,7 +23,7 @@ const getUsuarios = async (req,res = response) => {
                 .find({}, 'nombre role email google img')
                 .skip(desde)
                 .limit(5),
-            Usuario.count()    
+            Usuario.countDocuments()    
     ]);
 
     res.json({
@@ -110,13 +109,25 @@ const actualizarUsuario = async(req, res = response) => {
             }
         }
 
-        campos.email = email;
+        if( !usuarioDB.google){
+
+            campos.email = email
+        }else{
+            
+            if( usuarioDB.email !== email){
+
+                return res.status(400).json({
+                    ok: false,
+                    msg: "Usuarios de google no pueden actualizar el email"
+                })
+            }
+        }
 
         const userActualizado = await Usuario.findByIdAndUpdate( uid, campos, {new: true});
 
         res.json({
             ok: true,
-            usario: userActualizado
+            usuario: userActualizado
         })
     } catch (error) {
         console.log(error);
