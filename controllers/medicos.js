@@ -35,17 +35,12 @@ const crearMedicos = async (req, res = response) => {
     } catch (error) {
         console.log(error);
 
-        res.status(500).json({
+        return res.status(500).json({
             ok: false,
             msg: "Sucedio algo inesperado"
         })
     }
 
-
-    res.json({
-        ok: true,
-        msg: 'crearMedicos'
-    })
 }
 
 const actualizarMedicos = async(req, res) => {
@@ -94,7 +89,7 @@ const actualizarMedicos = async(req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
             ok: false,
             msg: "Error al actualizar medico" 
 
